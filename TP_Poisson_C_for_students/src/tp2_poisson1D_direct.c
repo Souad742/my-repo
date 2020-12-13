@@ -11,11 +11,12 @@ int main(int argc,char *argv[])
   int ierr;
   int jj;
   int nbpoints, la;
-  int ku, kl, kv, lab;
+  int ku, kl, kv, lab,incx,incy;
   int *ipiv;
   int info;
   int NRHS;
   double T0, T1;
+  double alpha,beta;
   double *RHS, *EX_SOL, *X;
   double *AB;
   double temp, relres;
@@ -42,7 +43,12 @@ int main(int argc,char *argv[])
   kv=1;
   ku=1;
   kl=1;
-  lab=kv+kl+ku+1;
+  //lab=kv+kl+ku+1;
+  lab=kv+kl+ku;
+  incx=1;
+  incy=1;
+  alpha=1.0;
+  beta=0.0;
 
   AB = (double *) malloc(sizeof(double)*lab*la);
 
@@ -51,16 +57,15 @@ int main(int argc,char *argv[])
   /* working array for pivot used by LU Factorization */
   ipiv = (int *) calloc(la, sizeof(int));
 
-  int row = 0; //
+  int row = 1; 
+  //int row =0;
 
-  if (row == 1){ // LAPACK_ROW_MAJOR
+  if (row == 0){ // LAPACK_ROW_MAJOR
     set_GB_operator_rowMajor_poisson1D(AB, &lab, &la);
     write_GB_operator_rowMajor_poisson1D(AB, &lab, &la, "AB_row.dat");
     
-       //info = LAPACKE_dgbsv(LAPACK_ROW_MAJOR,la, kl, ku, NRHS, AB, la, ipiv, RHS, NRHS);
-     // cblas_dgbmv(LAPACK_COL_MAJOR, CblasNoTrans, lab, la, kl, ku, 1.0, AB, la, EX_SOL, 1, 0.0, RHS, 1);
-     
-
+      //info = LAPACKE_dgbsv(LAPACK_ROW_MAJOR,la, kl, ku, NRHS, AB, la, ipiv, RHS, NRHS);
+      
 
 
   } 
@@ -68,8 +73,8 @@ int main(int argc,char *argv[])
     set_GB_operator_colMajor_poisson1D(AB, &lab, &la, &kv);
     write_GB_operator_colMajor_poisson1D(AB, &lab, &la, "AB_col.dat");
 
-    info = LAPACKE_dgbsv(LAPACK_COL_MAJOR,la, kl, ku, NRHS, AB, lab, ipiv, RHS, la);
-    //cblas_dgbmv(LAPACK_COL_MAJOR, CblasNoTrans, lab, la, kl, ku, 1.0, AB, lab, EX_SOL, 1, 0.0, RHS, 1);
+  // info = LAPACKE_dgbsv(LAPACK_COL_MAJOR,la, kl, ku, NRHS, AB, lab, ipiv, RHS, la);
+   cblas_dgbmv(CblasColMajor, CblasNoTrans, la, la, kl, ku, alpha, AB, lab, EX_SOL, incx, beta, RHS, incy);
   
   }    
 
