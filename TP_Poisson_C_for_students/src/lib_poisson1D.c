@@ -4,61 +4,73 @@
 /* Poisson problem (Heat equation)            */
 /**********************************************/
 #include "lib_poisson1D.h"
-
 void set_GB_operator_rowMajor_poisson1D(double* AB, int *lab, int *la){
+int ii, jj, kk;
+for (jj=0;jj<(*lab);jj++){
+    kk = 6*jj;
 
-int ii,jj,kk;
- for(jj=0;jj<(*lab);jj++){
-   kk=jj*6;
-   switch(jj){
-     
-     case 0:
-     for(ii=0;ii<(*la);ii++){
-       AB[kk+ii]=0.0;
-       }break;
+     switch(jj) {
+ /*case 0: 
+            for(ii=0; ii<(*la) ; ii++){
+           AB[kk+ii]=0.0;}break;*/
+           
+ case 0:  
+         
+              for(ii=0; ii<(*la) ; ii++){
+           AB[kk+ii]=-1.0;
+           }break;
 
-      case 1:
-     for(ii=0;ii<(*la);ii++){
-
-       AB[kk+ii]=-1.0;
-       }break;
-       
-       case 2:
-     for(ii=0;ii<(*la);ii++){
-       AB[kk+ii]=2.0;
-       }break;
-      
-       case 3:
-      
-     for(ii=0;ii<(*la);ii++){
-       AB[kk+ii]=-1.0;
-       }break;
-      
-        Default: printf("erreur"); 
+ case 1:   
+            for(ii=0; ii<(*la) ; ii++){
+           AB[kk+ii]=2.0;
+           }break;
+ case 2: 
+          for(ii=0; ii<(*la) ; ii++){
+           AB[kk+ii]=-1.0;
+           }break; 
+ default :printf("erreur");
 
 }
 }
- AB[6]=0.0;
+ AB[0]=0.0;
  AB[(*lab)*(*la)-1]=0.0;
 }
+
+/*void set_GB_operator_rowMajor_poisson1D(double* AB, int *lab, int *la){
+
+int jj,ii1,ii2,ii3,ii4,ii5;
+ for(jj=0;jj<(*la);jj++){
+   ii1=jj;
+   ii2=(*la)+jj;
+   ii3=2*(*la)+jj;
+   ii4=3*(*la)+jj;
+   AB[ii1]=0.0;
+   AB[ii2]=-1.0;
+   AB[ii3]=2.0;
+   AB[ii4]=-1.0;
+ }
+AB[*la]=0.0;
+AB[4*(*la)-1]=0.0;
+}*/
 void set_GB_operator_colMajor_poisson1D(double* AB, int *lab, int *la, int *kv){
   int ii, jj, kk;
   for (jj=0;jj<(*la);jj++){
     kk = jj*(*lab);
     if (*kv>=0){
       for (ii=0;ii< *kv;ii++){
-	AB[kk+ii]=0.0;
+	AB[kk+ii]=-1.0;
       }
     }
-    AB[kk+ *kv]=-1.0;
-    AB[kk+ *kv+1]=2.0;
-    AB[kk+ *kv+2]=-1.0;
+    AB[kk+ *kv]=2.0;
+    AB[kk+ *kv+1]=-1.0;
+    //AB[kk+ *kv+2]=-1.0;
   }
-  AB[0]=0.0;
-  if (*kv == 1) {AB[1]=0;}
+  //AB[0]=0;
+  if (*kv == 1) {AB[0]=0;}
   
-  AB[(*lab)*(*la)-1]=0.0;
+  AB[3*(*la)-1]=0.0;
 }
+
 
 void set_GB_operator_colMajor_poisson1D_Id(double* AB, int *lab, int *la, int *kv){
   int ii, jj, kk;
