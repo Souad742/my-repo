@@ -10,21 +10,21 @@ for (jj=0;jj<(*lab);jj++){
     kk = 6*jj;
 
      switch(jj) {
- /*case 0: 
+ case 0: 
             for(ii=0; ii<(*la) ; ii++){
-           AB[kk+ii]=0.0;}break;*/
+           AB[kk+ii]=0.0;}break;
            
- case 0:  
+ case 1:  
          
               for(ii=0; ii<(*la) ; ii++){
            AB[kk+ii]=-1.0;
            }break;
 
- case 1:   
+ case 2:   
             for(ii=0; ii<(*la) ; ii++){
            AB[kk+ii]=2.0;
            }break;
- case 2: 
+ case 3: 
           for(ii=0; ii<(*la) ; ii++){
            AB[kk+ii]=-1.0;
            }break; 
@@ -32,7 +32,7 @@ for (jj=0;jj<(*lab);jj++){
 
 }
 }
- AB[0]=0.0;
+ AB[6]=0.0;
  AB[(*lab)*(*la)-1]=0.0;
 }
 
