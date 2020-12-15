@@ -46,7 +46,7 @@ int main(int argc,char *argv[])
   //lab=kv+kl+ku+1;
   lab=kv+kl+ku;
   incx=1;
-  incy=1;
+  incy=2;
   alpha=1.0;
   beta=0.0;
 
@@ -58,7 +58,7 @@ int main(int argc,char *argv[])
   ipiv = (int *) calloc(la, sizeof(int));
 
   int row = 1; 
-  //int row =0;
+
 
   if (row == 0){ // LAPACK_ROW_MAJOR
     set_GB_operator_rowMajor_poisson1D(AB, &lab, &la);
@@ -74,11 +74,33 @@ int main(int argc,char *argv[])
     write_GB_operator_colMajor_poisson1D(AB, &lab, &la, "AB_col.dat");
 
   // info = LAPACKE_dgbsv(LAPACK_COL_MAJOR,la, kl, ku, NRHS, AB, lab, ipiv, RHS, la);
-   cblas_dgbmv(CblasColMajor, CblasNoTrans, la, la, kl, ku, alpha, AB, lab, EX_SOL, incx, beta, RHS, incy);
+   //cblas_dgbmv(CblasColMajor, CblasNoTrans, la, la, kl, ku, alpha, AB, lab, EX_SOL, incx, beta, RHS, incy);
   
   }    
 
+    const double b[3]={3.0,1.0,1.0};
+ const double x[3]={3.0,3.0,2.0};
+ double x_s[3]={0.0,0.0,0.0};
+ const double Bb[3][3] = {{ 2 , -1 , 0}, { -1 , 2 , -1 }, { 0, -1 , 2}};
   
+  
+  int i;
+  int j;
+
+   for(i=0;i<3;i++){
+   for(j=0;j<3;j++)
+     { x_s[i]=x_s[i]+(alpha*Bb[i][j]*x[j])+(beta*x_s[i]);}
+     printf("%f\n",x_s[i]);  
+       
+    }
+      cblas_dgbmv(CblasColMajor, CblasNoTrans, 3, lab, kl, ku, alpha, Bb, 4, x, incx, beta, x_s, incy);
+        for(i=0;i<3;i++){
+       printf("%f\n",x_s[i]); } 
+
+
+
+
+
   printf("\n INFO DGBSV = %d\n",info);
 
   write_xy(RHS, X, &la, "SOL.dat");
