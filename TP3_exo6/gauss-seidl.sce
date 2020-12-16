@@ -6,7 +6,7 @@ function[sol,niter,info]= gauss_seidl(A,b,nmaxit,tol)
         error('erreur:diagonale est nulle')
     end
     //décomposition de A=D-E-F
-   D=diag(diag(A))
+     D=diag(diag(A))
      E=-triu(A)+D
      F=-tril(A)+D
      x=inv(A)*b
@@ -24,7 +24,8 @@ function[sol,niter,info]= gauss_seidl(A,b,nmaxit,tol)
                     break
                  end
             end
- plot(1:niter,log(err))    
+ xtitle('le graphe de convergence pour la méthode de gauss-seidel')
+plot(1:niter,log(err),xtitle)    
 endfunction
 
 n=3;
