@@ -65,7 +65,7 @@ int main(int argc,char *argv[])
     write_GB_operator_rowMajor_poisson1D(AB, &lab, &la, "AB_row.dat");
     
       //info = LAPACKE_dgbsv(LAPACK_ROW_MAJOR,la, kl, ku, NRHS, AB, la, ipiv, RHS, NRHS);
-      
+      //cblas_dgbmv(LAPACK_COL_MAJOR, CblasTrans, la, la, kl, ku, 1.0, AB, la, EX_SOL, 1, 0.0, RHS, 1);
 
 
   } 
@@ -78,21 +78,22 @@ int main(int argc,char *argv[])
   
   }    
 
-    const double b[3]={3.0,1.0,1.0};
- const double x[3]={3.0,3.0,2.0};
+   //Méthode de validation
+ const double x[3]={1.0,1.0,3.0};
  double x_s[3]={0.0,0.0,0.0};
  const double Bb[3][3] = {{ 2 , -1 , 0}, { -1 , 2 , -1 }, { 0, -1 , 2}};
   
   
   int i;
   int j;
-
+   printf("le vecteur retourné par: x_s = alpha*Bb*x)+(beta*x_s)\n");
    for(i=0;i<3;i++){
    for(j=0;j<3;j++)
      { x_s[i]=x_s[i]+(alpha*Bb[i][j]*x[j])+(beta*x_s[i]);}
      printf("%f\n",x_s[i]);  
        
     }
+       printf("le vecteur retourné par la fonction DGBMV\n");
       cblas_dgbmv(CblasColMajor, CblasNoTrans, 3, lab, kl, ku, alpha, Bb, 4, x, incx, beta, x_s, incy);
         for(i=0;i<3;i++){
        printf("%f\n",x_s[i]); } 
