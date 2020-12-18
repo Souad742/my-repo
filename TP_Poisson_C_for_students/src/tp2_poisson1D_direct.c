@@ -81,7 +81,7 @@ int main(int argc,char *argv[])
    //Méthode de validation
  const double x[3]={1.0,1.0,3.0};
  double x_s[3]={0.0,0.0,0.0};
- const double Bb[3][3] = {{ 2 , -1 , 0}, { -1 , 2 , -1 }, { 0, -1 , 2}};
+ const double Bb[3][3] = {{ 2.0 , -1.0 , 0.0}, { -1.0 , 2.0 , -1.0 }, { 0.0, -1.0 , 2.0}};
   
   
   int i;
